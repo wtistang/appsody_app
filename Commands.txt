@@ -1,0 +1,75 @@
+
+appsody repo add kabanero <paste your Kabanero collection hub address here>
+
+appsody repo list
+
+appsody list kabanero
+
+appsody repo set-default kabanero
+
+cd /home/ibmdemo/
+
+mkdir appsody_app
+
+cd /home/ibmdemo/appsody_app
+
+appsody init kabanero/java-microprofile
+
+appsody build
+
+cd /home/ibmdemo/appsody_app
+
+code .
+
+appsody test
+
+appsody run
+
+package dev.appsody.starter;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+@Path("/hello")
+public class StarterResource {
+    @GET
+    public String getRequest() {
+        return "Hello World";
+    }
+}
+
+
+appsody debug
+
+cd /home/ibmdemo/appsody_app
+
+appsody deploy --generate-only
+
+cd /home/ibmdemo/appsody_app
+
+git init
+
+git add .
+
+git commit -m "initial commit"
+
+git remote add origin <your GitHub repo URL>
+
+git push -u origin master
+
+cd /home/ibmdemo/appsody_app
+
+oc login -u admin -p passw0rd
+
+oc project kabanero
+
+oc apply -f /home/ibmdemo/cp4a-labs/lab3/pipeline-resources.yaml
+
+tkn pipeline start  java-microprofile-build-deploy-pipeline \
+        -r git-source=my-app-git \
+        -r docker-image=my-app-image \
+        -s kabanero-operator \
+        -n kabanero
+
+
+
+
+

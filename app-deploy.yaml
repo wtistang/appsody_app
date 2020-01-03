@@ -1,0 +1,33 @@
+apiVersion: appsody.dev/v1beta1
+kind: AppsodyApplication
+metadata:
+  name: appsody-app
+spec:
+  version: 1.0.0
+  applicationImage: docker-registry.default.svc:5000/kabanero/appsody-app
+  stack: java-microprofile
+  service:
+    type: NodePort
+    port: 9080
+    annotations:
+      prometheus.io/scrape: 'true'
+  resourceConstraints:
+    limits:
+      memory: 512Mi
+      cpu: 2
+    requests:
+      cpu: 0.5
+  readinessProbe:
+    failureThreshold: 12
+    httpGet:
+      path: /health
+      port: 9080
+    initialDelaySeconds: 5
+    periodSeconds: 2
+#  autoscaling:
+#    targetCPUUtilizationPercentage: 50
+#    minReplicas: 2
+#    maxReplicas: 4
+#  storage:
+#    mountPath: "/logs"
+#    size: 1Gi
